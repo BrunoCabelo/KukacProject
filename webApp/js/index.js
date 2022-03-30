@@ -1,103 +1,68 @@
-
 $(()=>{
+    //Axios
+    async function axiosPost(link, obj){
+        return new Promise((resolve, reject) => {
+            axios.post(link, obj).then(response => {
+                resolve(response);
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    }
 
-    //Palindromos
-    $('#enviarpalindromos').click(() => {
+    //palindromos
+    async function palindromosRequest(){
         var inter1 = $('#inter1').val();
         var inter2 = $('#inter2').val();
+
+        var link = 'http://localhost:8080/palindromos'
         var post = {
             inter1,
             inter2
         }
         var list = '';
-
-        axios.post('http://localhost:8080/palindromos', post).then(response => {
-            var palindromos = response.data;
-
-            for(let i = 0; i < palindromos.length; i++){
-                list += "<li>"+ palindromos[i] +"</li>";
-            }
-            
-            $('#palindromos').html(list);
-        }).catch(err => {
-            console.log(err);
-        });
-    });
-
-    //Caixa
-    $('#calcularTroco').click(() => {
         
+        var response = await axiosPost(link, post);
+        var palindromos = response.data;
+        
+        for(let i = 0; i < palindromos.length; i++){
+            list += "<li>"+ palindromos[i] +"</li>";
+        }
+        
+        $('#palindromos').html(list);
+        
+    }
+
+    //Troco
+    async function axiosTroco(){
         var val1 = $('#valorCompra').val();
         var val2 = $('#valorEntregue').val();
+        var post = {val1, val2}
         
+        var link = 'http://localhost:8080/calculoTroco';
+        
+        var response = await axiosPost(link, post);
+
+        $('#troco').html(response.data.trocoTotal);
+        $('#notas100').html(response.data.notas100);
+        $('#notas10').html(response.data.notas10);
+        $('#notas1').html(response.data.notas1);
         $('#compra').html(val1);
         $('#entregue').html(val2);
 
-        var post = {val1, val2}
-        axiosTroco(post);
-        
-    });
-
-    async function axiosTroco(obj){
-        axios.post('http://localhost:8080/calculoTroco',obj).then(response => {
-            var troco = response.data.trocoTotal;    
-            var notas100 = response.data.notas100;
-            var notas10 = response.data.notas10;
-            var notas1 = response.data.notas1;
-
-            $('#troco').html(troco);
-            $('#notas100').html(notas100);
-            $('#notas10').html(notas10);
-            $('#notas1').html(notas1);
-        });
     }
 
-    //CEP
-    var arrCeps = [];
-    var listCep = '';
-
-    $('#adicionarCep').click(() => {
-
-        var cep = $('#cep').val();
-        cep = cep.replace(/\D/g, '');
-
-        if(cep.length == 8){
-            arrCeps.push(cep);
-
-            listCep += '<li>'+cep+'</li>'
-            $('#ceps').html(listCep);
-
-            if(arrCeps.length == 5){
-                $('#adicionarCep').attr('disabled', '');
-                mainCeps(arrCeps);
-            }
-        }else{
-            alert('Informe um cep valido!');
-        }
-
-    });
-
+    //CEPS
     async function cepsList(arr){
-        return new Promise((resolve, reject) => {
-            post = {
-                ceps: arr
-            }
-            axios.post('http://localhost:8080/ceps', post).then(result => {
-                resolve(result.data);
-            }).catch(err => {
-                console.log(err);
-                reject(false);
-            });
-        });
-    }
-
-    async function mainCeps(arr){
+        var link = 'http://localhost:8080/ceps';
+        var post = {
+            ceps: arr
+        } 
+        var response = await axiosPost(link, post);
+        var result = response.data;
         var newlistCep = '';
-
-        var result = await cepsList(arr);
         for(let i = 0; i < result.length; i++){
             var cep = result[i];
-            
             newlistCep +=
             `<li> 
             Cep: ${cep.cep}
@@ -109,11 +74,41 @@ $(()=>{
             </li>`                        
         }
         $('#ceps').html(newlistCep);
+        resolve(true);
     }
 
+    var listCep = '';
+    function cepArrayValidation(str){
+        if(str.length == 8){
+            listCep += `<li> ${str} </li>`
+            $('#ceps').html(listCep);
+            return str;
+        }else{
+            return false;
+        }
+        
+    }
 
-    //Carro
-    $('#criarCarro').click(()=>{
+    var arrCeps = [];
+    async function mainCep(){
+        var valu = $('#cep').val();
+        cep = valu.replace(/\D/g, '');
+        
+        var cepValidation = cepArrayValidation(cep);
+        console.log(cepValidation)
+        cepValidation ? arrCeps.push(cepValidation) : alert('Informe um cep valido');
+
+        if(arrCeps.length == 5){
+            $('#adicionarCep').attr('disabled', '');
+            console.log(arrCeps)
+            cepsList(arrCeps);
+        }
+    }
+
+    //Carros
+    async function saveCarros(){
+        var link = 'http://localhost:8080/veiculo';
+
         var tipo = $('#tipo').val()
         var modelo = $('#modelo').val();
         var ano = $('#ano').val();
@@ -124,14 +119,28 @@ $(()=>{
             alert('Verifique os campos e tente novamente!');
         }else{
             var post = {tipo, modelo, ano, portas, marca};
-            axios.post('http://localhost:8080/veiculo', post).then(result => {
-                console.log(result);
-            }).catch(err => {
-                console.log(err);
-            });
+            axiosPost(link, post);
         }
-        
-        console.log(post);
+    }
+
+    //Palindromos
+    $('#enviarpalindromos').click(() => {
+        palindromosRequest();
+    });
+
+    //Caixa
+    $('#calcularTroco').click(() => {
+        axiosTroco();
+    });
+
+    //CEP
+    $('#adicionarCep').click(() => {
+        mainCep();
+    });
+
+    //Carro
+    $('#criarCarro').click(()=>{
+        saveCarros();
     })
     
 });
