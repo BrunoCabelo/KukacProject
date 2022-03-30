@@ -13,6 +13,7 @@ router.post('/palindromos', (req, res) => {
 
     var arr = fc.verifyPalindromos(inter1, inter2);
     res.status(200);
+    console.log(arr)
     res.json(arr);
 })
 
