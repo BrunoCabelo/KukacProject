@@ -1,3 +1,4 @@
+
 $(()=>{
 
     //Palindromos
@@ -111,5 +112,27 @@ $(()=>{
     }
 
 
+    //Carro
+    $('#criarCarro').click(()=>{
+        var tipo = $('#tipo').val()
+        var modelo = $('#modelo').val();
+        var ano = $('#ano').val();
+        var portas = $('#portas').val();;
+        var marca = $('#marca').val();
 
+        if(tipo == "" || modelo == "" || ano == "" || portas > 4 || portas < 2 || marca == "" ){
+            alert('Verifique os campos e tente novamente!');
+        }else{
+            var post = {tipo, modelo, ano, portas, marca};
+            axios.post('http://localhost:8080/veiculo', post).then(result => {
+                console.log(result);
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+        
+        console.log(post);
+    })
+    
 });
+

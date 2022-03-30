@@ -17,9 +17,9 @@ router.get('/veiculos', (req, res) => {
             res.status(200);
             var json = JSON.parse(data);
 
-            var teste = await fc.createVeiculos(json);
-            console.log(teste);
-            res.json(json);    
+            var arrCarrs = await fc.createVeiculos(json);
+            
+            res.json({items: arrCarrs});    
         }
     }
     main();
@@ -31,6 +31,8 @@ router.post('/veiculo', (req, res) => {
 
     var obj ={ tipo, modelo, ano, portas, marca}
     fc.saveVeiculo(obj)
+    res.status(200);
+    res.json('ok')
 
 });
 
