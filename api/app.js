@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const palindromos = require('./Modules/Palindromos/PalindromosController');
 const controleCaixa = require('./Modules/ControleCaixa/CaixaController');
 const ceps = require('./Modules/Ceps/CepController');
-const veiculos = require('./Modules/ControleVeiculos/js/VeiculosController');
+const veiculos = require('./Modules/ControleVeiculos/VeiculosController');
 
 app.use('/', veiculos);
 app.use('/', palindromos);
