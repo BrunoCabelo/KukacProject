@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Kukac</title>
+</head>
+<body>
+    <h2>Palindromos</h2>
+    <input type="number" id="inter1" name="inter1" placeholder="intervalo 1" value="10">
+    <input type="number" id="inter2" name="inter2" placeholder="intervalo 2" value="100">
+    <button id="enviarpalindromos">Enviar</button>
+
+    <div>
+        <ul id="palindromos">
+                        
+        </ul>
+    </div>
+
+    <hr>
+    <h2>Controle de caixa</h2>
+    <input type="number" name="valorCompra" id="valorCompra" placeholder="Insira o valor da compra">
+    <input type="number" name="valorEntregue" id="valorEntregue" placeholder="Insira o valor entregue ao caixa">
+    <button id="calcularTroco">Enviar</button>
+
+    <br>
+    <p>Valor da compra: <span id="compra"></span></p>
+    <p>Valor entregue: <span id="entregue"></span></p>
+    <p>Valor do troco: <span id="troco"></span></p>
+    <p>Notas de 100: <span id="notas100"></span></p>
+    <p>Notas de 10: <span id="notas10"></span></p>
+    <p>Notas de 1: <span id="notas1"></span></p>
+
+    <hr>
+    
+    <input type="text" name="cep" id="cep" minlength="8" maxlength="8" placeholder="Informe o cep">
+    <button type="submit" id="adicionarCep">Adicionar</button>
+   
+
+    <p>Ceps: </p>
+    <ul id="ceps">
+
+    </ul>
+    <script src="./js/app.js"></script>
+</body>
+</html>
