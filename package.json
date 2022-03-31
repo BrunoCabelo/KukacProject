@@ -4,7 +4,7 @@
   "description": "Projeto para processo seletivo ",
   "main": "app.js",
   "scripts": {
-    "build": "sucrase ./api/Modules/ControleVeiculos/ts -d ./api/Modules/ControleVeiculos/js --transforms typescript,imports"
+    "start": "node ./api/app.js"
   },
   "repository": {
     "type": "git",
