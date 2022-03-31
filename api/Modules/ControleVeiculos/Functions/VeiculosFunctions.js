@@ -27,10 +27,17 @@ async function saveVeiculo(obj){
     var ano = obj.ano;
     var portas = obj.portas;
     var marca = obj.marca;
+    var passageiros = obj.passageiros;
     var d = Date.now();
     var data = d.toString();
     
-    var newobj = `,"${data}": {"tipo": "${tipo}", "modelo": "${modelo}", "ano": "${ano}", "portas": "${portas}", "marca": "${marca}"}}`;
+    if(tipo == 'moto'){
+        var newobj = `,"${data}": {"tipo": "${tipo}", "modelo": "${modelo}", "ano": "${ano}", "passageiros": "${passageiros}", "marca": "${marca}"}}`;
+    }else{
+        var newobj = `,"${data}": {"tipo": "${tipo}", "modelo": "${modelo}", "ano": "${ano}", "portas": "${portas}", "marca": "${marca}"}}`;
+    }
+
+    
     
     stringDB += newobj;
     var jsn = JSON.parse(stringDB);
@@ -55,11 +62,11 @@ async function createVeiculos(jsn){
 
         switch(tipo){
             case 'carro':
-                var car = new Carro(obj.modelo, obj.ano, obj.portas, obj.marca);
+                var car = new Carro(obj.tipo, obj.modelo, obj.ano, obj.portas, obj.marca);
                 objArr.push(car);
                 break;
             case 'moto': 
-                var mot = new Moto(obj.modelo, obj.ano, obj.portas, obj.marca);
+                var mot = new Moto(obj.tipo, obj.modelo, obj.ano, obj.portas, obj.marca, obj.passageiros);
                 objArr.push(mot);
                 break;
         }

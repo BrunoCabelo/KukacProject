@@ -7,59 +7,135 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
     <title>Kukac</title>
 </head>
 <body>
-    <h2>Palindromos</h2>
-    <input type="number" id="inter1" name="inter1" placeholder="intervalo 1" value="10">
-    <input type="number" id="inter2" name="inter2" placeholder="intervalo 2" value="100">
-    <button id="enviarpalindromos">Enviar</button>
-
-    <div>
-        <ul id="palindromos">
-                        
-        </ul>
-    </div>
-
-    <hr>
-    <h2>Controle de caixa</h2>
-    <input type="number" name="valorCompra" id="valorCompra" placeholder="Insira o valor da compra">
-    <input type="number" name="valorEntregue" id="valorEntregue" placeholder="Insira o valor entregue ao caixa">
-    <button id="calcularTroco">Enviar</button>
-
-    <br>
-    <p>Valor da compra: <span id="compra"></span></p>
-    <p>Valor entregue: <span id="entregue"></span></p>
-    <p>Valor do troco: <span id="troco"></span></p>
-    <p>Notas de 100: <span id="notas100"></span></p>
-    <p>Notas de 10: <span id="notas10"></span></p>
-    <p>Notas de 1: <span id="notas1"></span></p>
-
-    <hr>
     
-    <input type="text" name="cep" id="cep" minlength="8" maxlength="8" placeholder="Informe o cep">
-    <button type="submit" id="adicionarCep">Adicionar</button>
+
+    <section>
+        <div id="palindromos-container">
+            <div id="palindromos-content">
+                <h2 class="title">Palindromos</h2>
+                <label for="inter1">Inicio do intervalo</label>
+                <input type="number" id="inter1" name="inter1" placeholder="intervalo 1" value="10">
+                
+                <label for="inter1">Fim do intervalo</label>
+                <input type="number" id="inter2" name="inter2" placeholder="intervalo 2" value="100">
+                <button id="enviarpalindromos">Enviar</button>
+            </div>
+            <div id="palindromos">
+            </div>
+        </div>
+    </section>
+    
    
+    <section>
+        <div id="caixa-container">
+            <div id="controle-caixa-formulario">
+            <h2 class="title">Controle de caixa</h2>
+            <label for="valorCompra">Insira o valor da compra</label>
+            <input type="number" name="valorCompra" id="valorCompra" placeholder="$$">
 
-    <p>Ceps: </p>
-    <ul id="ceps">
+            <label for="valorEntregue">Insira o valor entregue ao caixa</label>
+            <input type="number" name="valorEntregue" id="valorEntregue" placeholder="$$">
+            <button id="calcularTroco">Enviar</button>
+            <br>
+            </div>
 
-    </ul>
+            <div id="controle-de-caixa">
+                <div class="controle-caixa-row">
+                    <div class="caixa-conjunto">
+                        <label for="compra">Valor da compra</label>
+                        <input id="compra" readonly placeholder="$$">
+                    </div>
 
-    <hr>
-    <h2>Veiculos</h2> 
+                    <div class="caixa-conjunto">
+                        <label for="compra">Valor pago</label>
+                        <input id="entregue" readonly placeholder="$$">
+                    </div>
+                </div>
+                
+                <div class="controle-caixa-row">
+                    <div class="caixa-conjunto">
+                        <label for="troco">Troco nescessario</label>
+                        <input id="troco" readonly placeholder="$$">
+                    </div>                        
+                    <div class="caixa-conjunto">
+                        <label for="compra">Notas de 100</label>
+                        <input id="notas100" readonly placeholder="$$">
+                    </div>
+                </div>
+                
+                <div class="controle-caixa-row">
+                    <div class="caixa-conjunto">
+                        <label for="compra">Notas de 10</label>
+                        <input id="notas10" readonly placeholder="$$">
+                    </div>
 
-    <select name="tipo" id="tipo">
-        <option value="carro">Carro</option>
-        <option value="moto">Moto</option>
-    </select>
+                    <div class="caixa-conjunto">
+                        <label for="compra">Notas de 1</label>
+                        <input id="notas1" readonly  placeholder="$$">
+                    </div>
+
+                </div>
+            </div>  
+            
+        </div>
+    </section>
     
-    <input type="text" name="modelo" id="modelo" placeholder="Modelo">
-    <input type="text" name="ano" id="ano" placeholder="Ano">
-    <input type="number" max="4" min="2" name="portas" id="portas" placeholder="Quantidade de portas">
-    <input type="text" name="marca" id="marca" placeholder="Marca">
-    <button id="criarCarro">Criar</button>
-    
+    <section>
+        <div id="ceps-container">
+            <div id="ceps-content">
+                <h2 class="title">CEPs</h2>
+
+                <label for="cep">Informe o CEP</label>
+                <input type="text" name="cep" id="cep" minlength="8" maxlength="8" placeholder="XXXXXXXX">
+                <button id="adicionarCep">Adicionar</button>
+            </div>
+            <div id="ceps">
+
+            </div>
+            
+        </div>
+    </section>
+
+    <section>
+        <div id="ver-carros-container">
+            <h2 class="title">Ver carros</h2>
+            <button id="verCarros">Atualizar</button>
+            
+            <div id="cars">
+
+            </div>
+        </div>
+    </section>    
+    <section>
+        <div id="create-veiculo-container">
+            <h2 class="title">Veiculos</h2> 
+        
+            <select name="tipo" id="tipo">
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+            </select>
+            
+            <label for="modelo">Informe o modelo</label>
+            <input type="text" name="modelo" id="modelo" placeholder="Modelo">
+
+            <label for="ano">Informe o ano</label>
+            <input type="number" name="ano" id="ano"  placeholder="YYYY" min="1960" max="2024">
+
+            <label id="labelPortas" for="portas">Informe o numero de portas</label>
+            <input type="number" max="4" min="2" name="portas" value="4" id="portas" placeholder="2 - 4">
+
+            <label id="labelPassageiros" for="portas">Informe o numero de passageiros</label>
+            <input type="number" max="2" min="1" name="passageiros" id="passageiros" value="2" placeholder="1 - 2">
+
+            <label for="marca">Informe a marca</label>
+            <input type="text" name="marca" id="marca" placeholder="Honda">
+        <button id="criarCarro">Criar</button>
+        </div>
+    </section>    
     <script src="./js/index.js"></script>
 </body>
 </html>

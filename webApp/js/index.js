@@ -1,12 +1,27 @@
 $(()=>{
     //Axios
-    async function axiosPost(link, obj){
+    function axiosPost(link, obj){
         return new Promise((resolve, reject) => {
-            axios.post(link, obj).then(response => {
-                resolve(response);
+            try{
+                axios.post(link, obj).then(response => {
+                    resolve(response);
+                }).catch(err => {
+                    reject('Erro');
+                });;
+            }catch{
+                reject('Erro');
+            };
+            
+        });
+    }
+
+    function axiosGet(link){
+        return new Promise((resolve, reject) => {
+            axios.get(link).then(response => {
+                resolve(response.data);
             }).catch(err => {
                 reject(err);
-            });
+            })
         });
     }
 
@@ -26,7 +41,7 @@ $(()=>{
         var palindromos = response.data;
         
         for(let i = 0; i < palindromos.length; i++){
-            list += "<li>"+ palindromos[i] +"</li>";
+            list +=`<div class="palindromo">${palindromos[i]}</div>`;
         }
         
         $('#palindromos').html(list);
@@ -43,12 +58,12 @@ $(()=>{
         
         var response = await axiosPost(link, post);
 
-        $('#troco').html(response.data.trocoTotal);
-        $('#notas100').html(response.data.notas100);
-        $('#notas10').html(response.data.notas10);
-        $('#notas1').html(response.data.notas1);
-        $('#compra').html(val1);
-        $('#entregue').html(val2);
+        $('#troco').val(response.data.trocoTotal);
+        $('#notas100').val(response.data.notas100);
+        $('#notas10').val(response.data.notas10);
+        $('#notas1').val(response.data.notas1);
+        $('#compra').val(val1);
+        $('#entregue').val(val2);
 
     }
 
@@ -59,19 +74,17 @@ $(()=>{
             ceps: arr
         } 
         var response = await axiosPost(link, post);
+        console.log(response);
         var result = response.data;
         var newlistCep = '';
+        console.log(result);
         for(let i = 0; i < result.length; i++){
             var cep = result[i];
             newlistCep +=
-            `<li> 
-            Cep: ${cep.cep}
-            UF: ${cep.uf}
-            Cidade: ${cep.localidade}
-            Bairro: ${cep.bairro}
-            Rua: ${cep.logradouro}
-            DDD: ${cep.ddd}
-            </li>`                        
+            `<div class="cep"> <h5 class="cep-title"> Cep: ${cep.cep} </h5>
+            <p class="cidade"> Cidade: ${cep.localidade} - ${cep.uf} </p>
+            <p class="bairro"> Rua ${cep.logradouro} ${cep.complemento} - ${cep.bairro} </p></div>
+            `                        
         }
         $('#ceps').html(newlistCep);
         resolve(true);
@@ -80,7 +93,7 @@ $(()=>{
     var listCep = '';
     function cepArrayValidation(str){
         if(str.length == 8){
-            listCep += `<li> ${str} </li>`
+            listCep += `<div class="cep"><h5 class="cep-title"> ${str} <h5></div>`
             $('#ceps').html(listCep);
             return str;
         }else{
@@ -114,14 +127,73 @@ $(()=>{
         var ano = $('#ano').val();
         var portas = $('#portas').val();;
         var marca = $('#marca').val();
+        var passageiros = $('#passageiros').val();
 
         if(tipo == "" || modelo == "" || ano == "" || portas > 4 || portas < 2 || marca == "" ){
             alert('Verifique os campos e tente novamente!');
         }else{
-            var post = {tipo, modelo, ano, portas, marca};
+            var post = {tipo, modelo, ano, portas, marca, passageiros};
             axiosPost(link, post);
         }
     }
+
+    $('#tipo').change(()=>{
+        var valid = $('#tipo').val();
+        
+        if(valid == 'moto'){
+            $('#portas').hide();
+            $('#labelPortas').hide();
+
+            $('#passageiros').show();
+            $('#labelPassageiros').show();
+        }else{
+            $('#portas').show();
+            $('#labelPortas').show();
+
+            $('#passageiros').hide();
+            $('#labelPassageiros').hide();
+        }
+        
+    })
+
+    async function viewCars(){
+        var link = 'http://localhost:8080/veiculos';
+        var response = await axiosGet(link);
+        var results = response.items;
+        var list = ''
+        results.forEach(e => {
+            if(e.tipo == 'carro'){
+                list += `
+                <div class="carro">
+                    <img src="./img/carro.png" class="car-img" alt="">
+                    <div class="infos">
+                        <p>Modelo: <b>${e.modelo}</b></p>
+                        <p>Marca: <b>${e.marca}</b></p>
+                        <p>Ano: <b>${e.ano}</b></p>
+                        <p>Portas: <b>${e.portas}</b></p>
+                    </div>
+                </div> 
+                
+                `
+            }else{
+                list += `
+                <div class="moto">
+                    <img src="./img/moto.png" class="moto-img" alt="">
+                    <div class="infos">
+                    <p>Modelo: <b>${e.modelo}</b></p>
+                    <p>Marca: <b>${e.marca}</b></p>
+                    <p>Ano: <b>${e.ano}</b></p>
+                    <p>Passageiros: <b>${e.passageiros}</b></p>
+                    </div>
+                </div> 
+                `
+            }
+          
+        });
+
+        $('#cars').html(list);
+    }
+
 
     //Palindromos
     $('#enviarpalindromos').click(() => {
@@ -139,9 +211,14 @@ $(()=>{
     });
 
     //Carro
-    $('#criarCarro').click(()=>{
+    $('#criarCarro').click(() => {
         saveCarros();
-    })
+    });
+
+    $('#verCarros').click(() => {
+        viewCars();
+    });
     
+    viewCars();
 });
 

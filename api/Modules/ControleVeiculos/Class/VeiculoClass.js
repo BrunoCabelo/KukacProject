@@ -3,7 +3,8 @@ const util = require('util');
 
 
 class Veiculo {
-    constructor(modelo, ano, portas, marca){
+    constructor(tipo, modelo, ano, portas, marca){
+        this.tipo = tipo;
         this.modelo = modelo;
         this.ano = ano;
         this.portas = portas;

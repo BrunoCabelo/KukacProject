@@ -27,9 +27,9 @@ router.get('/veiculos', (req, res) => {
 });
 
 router.post('/veiculo', (req, res) => {
-    var {tipo, modelo, ano, portas, marca} = req.body;
+    var {tipo, modelo, ano, portas, marca, passageiros} = req.body;
 
-    var obj ={ tipo, modelo, ano, portas, marca}
+    var obj ={ tipo, modelo, ano, portas, marca, passageiros}
     fc.saveVeiculo(obj)
     res.status(200);
     res.json('ok')
