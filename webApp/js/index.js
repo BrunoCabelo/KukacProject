@@ -134,7 +134,7 @@ $(()=>{
         }else{
             var post = {tipo, modelo, ano, portas, marca, passageiros};
             axiosPost(link, post);
-        }
+        } 
     }
 
     $('#tipo').change(()=>{
